@@ -1,36 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Me</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Me</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Contact Me</h1>
-  </header>
-  
-  <div class="container">
-    <form action="" method="POST">
-      <label for="fullname">Full Name:</label>
-      <input type="text" id="fullname" name="fullname" required>
+    <header>
+        <h1>Contact Me</h1>
+    </header>
 
-      <label for="email">Email Address:</label>
-      <input type="email" id="email" name="email" required>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
 
-      <label for="country">Country:</label>
-      <input type="text" id="country" name="country">
+    <main>
+        <h2>Contact Form</h2>
+        <form action="submit_contact_form.php" method="POST">
+            <label for="fullname">Full Name:</label><br>
+            <input type="text" id="fullname" name="fullname" required><br>
+            <label for="email">Email Address:</label><br>
+            <input type="email" id="email" name="email" required><br>
+            <label for="country">Country:</label><br>
+            <input type="text" id="country" name="country" required><br>
+            <label for="comments">Comments:</label><br>
+            <textarea id="comments" name="comments" rows="4" required></textarea><br>
+            <input type="submit" value="Submit">
+        </form>
+    </main>
 
-      <label for="comments">Comments:</label>
-      <textarea id="comments" name="comments" rows="4" required></textarea>
-
-      <button type="submit">Submit</button>
-    </form>
-  </div>
-
-  <footer>
-    <p>&copy; 2024 M.R.A.Q - SID: 83103 </p>
-  </footer>
+    <footer>
+        <p>© 2024 Your Name</p>
+    </footer>
 </body>
 </html>
