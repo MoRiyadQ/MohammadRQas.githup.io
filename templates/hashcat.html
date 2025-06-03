@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hashcat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+<body class="bg-dark text-light">
+    <header class="bg-black text-white py-3">
+        <div class="container d-flex justify-content-between">
+            <h1>Hashcat Hash Cracking Tool</h1>
+            <nav>
+                <a href="{{ url_for('index') }}" class="text-light green-border">Home</a>
+                <a href="{{ url_for('logout') }}" class="text-light green-border">Logout</a>
+            </nav>
+        </div>
+
+    </header>
+
+    <div class="container my-5">
+        <h2>Crack Hashes with Hashcat</h2>
+
+        <form method="POST" class="mb-4" id="hashcat-form">
+            <div class="mb-3">
+                <label for="hash" class="form-label">Hash to Crack:</label>
+                <input type="text" id="hash" name="hash" class="form-control" required placeholder="Enter hash">
+            </div>
+
+            <!-- Dropdown for selecting Hash Algorithm -->
+            <div class="mb-3">
+                <label for="algorithm" class="form-label">Select Algorithm:</label>
+                <select id="algorithm" name="algorithm" class="form-control">
+                    <option value="0">MD5 (Default)</option>
+                    <option value="100">SHA1</option>
+                    <option value="1400">SHA256</option>
+                </select>
+            </div>
+
+            <!-- Dropdown for selecting Wordlist -->
+            <div class="mb-3">
+                <label for="wordlist" class="form-label">Select Wordlist:</label>
+                <select id="wordlist" name="wordlist" class="form-control">
+                    {% for wordlist in wordlists %}
+                        <option value="{{ wordlist }}">{{ wordlist }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Attack Mode Dropdown -->
+            <div class="mb-3">
+                <label for="attack_mode" class="form-label">Attack Mode:</label>
+                <select id="attack_mode" name="attack_mode" class="form-control">
+                    <option value="0">Straight (Default)</option>
+                    <option value="3">Brute Force</option>
+                    <option value="6">Hybrid Wordlist + Mask</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success">Crack Hash</button>
+        </form>
+
+        <!-- Show the spinner during the command execution -->
+        <div id="loading-spinner" class="text-center" style="display: none;">
+            <div class="spinner-border text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text-light">Testing in progress, please wait...</p>
+        </div>
+
+        <!-- Conditional Display of Output -->
+                <div class="bg-secondary p-4 rounded mt-4">
+                    <h3>Hashcat Output:</h3>
+                    <pre class="text-light" style="font-family: monospace;">
+                        {% for line in output %}
+                            {{ line }}
+                        {% endfor %}
+                    </pre>
+                </div>
+            
+        
+
+        <!-- Display any messages -->
+        {% if message %}
+            <div class="alert alert-warning">{{ message }}</div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Show the spinner when the form is submitted
+        document.getElementById("hashcat-form").addEventListener("submit", function(e) {
+            const hashInput = document.getElementById("hash").value;
+            const wordlistInput = document.getElementById("wordlist").value;
+            const attackModeInput = document.getElementById("attack_mode").value;
+
+            // Regex to allow only valid hash input
+            const validHashRegex = /^[a-fA-F0-9]{32,64}$/; // MD5, SHA1, or SHA256 hash formats
+            const validWordlistRegex = /^[a-zA-Z0-9-_\/\.]+$/; // Prevent any shell-injection related characters
+
+            // Deny shell injection characters like &&, ||, ;, etc.
+            const disallowedChars = /[\|\&\;\`]/;
+
+            // Validate Hash Input
+            if (!validHashRegex.test(hashInput) || disallowedChars.test(hashInput)) {
+                e.preventDefault();  // Prevent form submission
+                alert("Invalid hash format or contains disallowed characters!");
+                return;
+            }
+
+            // Validate Wordlist Input
+            if (!validWordlistRegex.test(wordlistInput) || disallowedChars.test(wordlistInput)) {
+                e.preventDefault();  // Prevent form submission
+                alert("Invalid wordlist path format or contains disallowed characters!");
+                return;
+            }
+
+            // Validate Attack Mode Input (just a basic check)
+            if (!['0', '3', '6'].includes(attackModeInput)) {
+                e.preventDefault();  // Prevent form submission
+                alert("Invalid attack mode selected!");
+                return;
+            }
+
+            // If validation passes, show the loading spinner
+            document.getElementById("loading-spinner").style.display = 'block';
+        });
+    </script>
+</body>
+</html>

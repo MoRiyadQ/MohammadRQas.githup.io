@@ -1,0 +1,11 @@
+/.htaccess           [33m (Status: 403)[0m [Size: 297]
+/.htpasswd           [33m (Status: 403)[0m [Size: 297]
+/cgi-bin/            [33m (Status: 403)[0m [Size: 296]
+/dav                 [36m (Status: 301)[0m [Size: 321][34m [--> http://192.168.100.104/dav/][0m
+/index               [32m (Status: 200)[0m [Size: 891]
+/phpMyAdmin          [36m (Status: 301)[0m [Size: 328][34m [--> http://192.168.100.104/phpMyAdmin/][0m
+/phpinfo             [32m (Status: 200)[0m [Size: 48020]
+/server-status       [33m (Status: 403)[0m [Size: 301]
+/test                [36m (Status: 301)[0m [Size: 322][34m [--> http://192.168.100.104/test/][0m
+/tikiwiki            [36m (Status: 301)[0m [Size: 326][34m [--> http://192.168.100.104/tikiwiki/][0m
+/twiki               [36m (Status: 301)[0m [Size: 323][34m [--> http://192.168.100.104/twiki/][0m

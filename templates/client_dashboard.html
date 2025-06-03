@@ -1,0 +1,15 @@
+{% extends "client_base.html" %}
+
+{% block title %}Client Dashboard{% endblock %}
+
+{% block content %}
+    <div class="client-container">
+        <h1>Your Security Scan Dashboard</h1>
+        <div class="scan-summary">
+            <h2>Scan #{{ scan.id }}</h2>
+            <p>Target: {{ scan.target }}</p>
+            <p>Date: {{ scan.timestamp.strftime('%Y-%m-%d') }}</p>
+            <a href="{{ url_for('client_scan_details') }}" class="btn btn-view">View Full Report</a>
+        </div>
+    </div>
+{% endblock %}

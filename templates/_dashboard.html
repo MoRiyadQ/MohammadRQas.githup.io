@@ -1,0 +1,62 @@
+<!-- templates/_dashboard.html -->
+<div class="scan-dashboard">
+    <div class="dashboard-header">
+        <h3>Scan Summary Dashboard</h3>
+        <p class="text-muted">Overview of discovered vulnerabilities by service</p>
+    </div>
+
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <h5>Total Services</h5>
+            <h4>{{ dashboard_data|length }}</h4>
+        </div>
+        <div class="stat-card">
+            <h5>Critical</h5>
+            <h4 class="text-danger">{{ dashboard_data|selectattr('severity', 'equalto', 'critical')|list|length }}</h4>
+        </div>
+        <div class="stat-card">
+            <h5>High</h5>
+            <h4 class="text-warning">{{ dashboard_data|selectattr('severity', 'equalto', 'high')|list|length }}</h4>
+        </div>
+        <div class="stat-card">
+            <h5>Medium</h5>
+            <h4 class="text-warning">{{ dashboard_data|selectattr('severity', 'equalto', 'medium')|list|length }}</h4>
+        </div>
+        <div class="stat-card">
+            <h5>Low</h5>
+            <h4 class="text-success">{{ dashboard_data|selectattr('severity', 'equalto', 'low')|list|length }}</h4>
+        </div>
+    </div>
+
+    <h4>Services Overview</h4>
+    {% for service in dashboard_data %}
+    <div class="service-card {{ service.severity }}">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5>
+                {{ service.service }} (Port: {{ service.port }})
+                <span class="severity-badge badge-{{ service.severity }} ms-2">
+                    {{ service.severity|upper }}
+                </span>
+            </h5>
+            <div>
+                <span class="badge bg-secondary me-2">{{ service.cve_count }} CVEs</span>
+                <span class="badge bg-dark">{{ service.exploit_count }} Exploits</span>
+            </div>
+        </div>
+        
+        {% if service.cve_count > 0 %}
+        <div class="mt-2">
+            <h6>Top CVEs:</h6>
+            <ul class="mb-1">
+                {% for cve in service.top_cves %}
+                <li>{{ cve }}</li>
+                {% endfor %}
+                {% if service.cve_count > 3 %}
+                <li>+ {{ service.cve_count - 3 }} more...</li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>

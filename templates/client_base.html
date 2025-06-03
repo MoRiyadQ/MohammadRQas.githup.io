@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Client Portal{% endblock %}</title>
+    <!-- Client-specific CSS -->
+    <link href="{{ url_for('static', filename='client.css') }}" rel="stylesheet">
+</head>
+<body class="client-theme">
+    <header class="client-header">
+        <nav>
+            <a href="{{ url_for('client_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('client_scan_details') }}">Scan Details</a>
+            <a href="{{ url_for('client_logout') }}">Logout</a>
+        </nav>
+    </header>
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer class="client-footer">
+        <!-- Client footer content -->
+    </footer>
+</body>
+</html>

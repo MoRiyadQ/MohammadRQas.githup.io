@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Administration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+<body class="bg-dark text-light">
+    <header class="bg-black text-white py-3">
+        <div class="container d-flex justify-content-between">
+            <h1>Users Administration</h1>
+            <nav>
+                <a href="{{ url_for('index') }}" class="text-light green-border">Home</a>
+                <a href="{{ url_for('logout') }}" class="text-light green-border">Logout</a>
+            </nav>
+        </div>
+        <div class="container text-center mt-3">
+            <p>Welcome, {{ username }}!</p>
+        </div>
+    </header>
+
+    <div class="container my-5">
+        <!-- Add Registration Form -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Register New Admin User</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('register') }}">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register Admin</button>
+                </form>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="alert alert-danger mt-3">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+
+    <div class="container my-5">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Create New Client User</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('create_client_user') }}">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="scan_id" class="form-label">Assign Scan ID</label>
+                        <select class="form-select" id="scan_id" name="scan_id" required>
+                            {% for scan in scans %}
+                                <option value="{{ scan.id }}">Scan #{{ scan.id }} - {{ scan.target }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">Create Client User</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Existing Client Users</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Assigned Scan</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for client in client_users %}
+                        <tr>
+                            <td>{{ client.id }}</td>
+                            <td>{{ client.username }}</td>
+                            <td>Scan #{{ client.scan_id }} - {{ client.scan.target }}</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('delete_client_user', client_id=client.id) }}" style="display: inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

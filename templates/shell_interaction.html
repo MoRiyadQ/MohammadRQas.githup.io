@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shell Interaction</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: monospace;
+        }
+        .console {
+            background-color: black;
+            color: white;
+            border: 1px solid #444;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+        }
+        #input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h3>Shell Interaction</h3>
+        <div class="console" id="console"></div>
+        <input type="text" id="input" placeholder="Type command and press Enter" class="form-control">
+    </div>
+
+    <script>
+        const inputField = document.getElementById('input');
+        const consoleDiv = document.getElementById('console');
+
+        inputField.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                const command = inputField.value;
+                inputField.value = '';  // Clear the input
+
+                // Send the command to the server
+                fetch('/send_command', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({ command: command })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.output) {
+                        consoleDiv.innerHTML += '<pre>' + data.output + '</pre>';
+                    } else if (data.error) {
+                        consoleDiv.innerHTML += '<pre>' + data.error + '</pre>';
+                    }
+                    consoleDiv.scrollTop = consoleDiv.scrollHeight;  // Scroll to the bottom
+                })
+                .catch(error => {
+                    consoleDiv.innerHTML += '<pre>Error: ' + error + '</pre>';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

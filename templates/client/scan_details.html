@@ -1,0 +1,44 @@
+{% extends "client/base.html" %}
+
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header">
+        <h4>Scan Details - {{ scan.target }}</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Services Found</h5>
+                <ul class="list-group">
+                    {% for port, service in services %}
+                    <li class="list-group-item">{{ port }}: {{ service }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h5>Vulnerabilities</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tr class="bg-danger text-white">
+                            <th>Critical</th>
+                            <td>{{ cves|selectattr('severity', 'equalto', 'Critical')|list|length }}</td>
+                        </tr>
+                        <tr class="bg-warning">
+                            <th>High</th>
+                            <td>{{ cves|selectattr('severity', 'equalto', 'High')|list|length }}</td>
+                        </tr>
+                        <tr class="bg-info">
+                            <th>Medium</th>
+                            <td>{{ cves|selectattr('severity', 'equalto', 'Medium')|list|length }}</td>
+                        </tr>
+                        <tr class="bg-success text-white">
+                            <th>Low</th>
+                            <td>{{ cves|selectattr('severity', 'equalto', 'Low')|list|length }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
